@@ -8,7 +8,7 @@ export const siteConfig = {
     email:"support@hstockalbums.com",
     footerText:"© 2025 HStock Albums All Rights Reserved",
     TopBadge:"Introducing our 7 days trail at 199", 
-    phoneNumber:(<><span>+91 </span>{", "}<span>+91 8929006611</span></>),
+    phoneNumber:(<><span>+91 8929003311</span>{", "}<span>+91 8929006611</span></>),
     address:"Hari Still Video Collection, Lodhi Market, Siyana Road, Bulandshahr (203001) Uttar Pradesh, India",
     howCanhelp:"Tell us about your project — we offer a powerful album designing software that makes creating albums and managing your photos faster and easier than ever before.",
     ourLocation:(<>
