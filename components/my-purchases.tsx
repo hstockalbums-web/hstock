@@ -46,7 +46,7 @@ export default function PurchasesPage({ data }: { data: any[] }) {
       </div>
 
       <div className="space-y-6">
-        {data.map((purchase) => (
+        {data?.map((purchase) => (
           <Card key={purchase.id} className="group hover:shadow-lg transition-all duration-200 border">
             <CardHeader className="pb-4">
               <div className="flex items-start gap-4">

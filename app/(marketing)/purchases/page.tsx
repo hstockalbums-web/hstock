@@ -33,6 +33,6 @@ export default async function ControlPanel() {
 
     const getData = await callmyPurchgases(token)
   return (
-    <PurchasesPage data={getData || []}/>
+    <PurchasesPage data={getData?.payments || []}/>
 )
 }

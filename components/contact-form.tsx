@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { MapPin, Mail, Phone, MessageCircle, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
 import { siteConfig } from "@/config/site-config"
 
@@ -18,6 +17,11 @@ export default function ContactForm() {
     email: "",
     message: "",
   })
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,8 +29,25 @@ export default function ContactForm() {
     setFormData({ ...formData, [name]: value })
   }
 
+  const validateForm = () => {
+    const newErrors = {
+      name: formData.name.trim() ? "" : "Full name is required",
+      email: formData.email.trim() ? "" : "Email is required",
+      message: formData.message.trim() ? "" : "Message is required",
+    }
+
+    setErrors(newErrors)
+
+    return !newErrors.name && !newErrors.email && !newErrors.message
+  }
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
+    if (!validateForm()) {
+      setStatus("error")
+      return
+    }
+
     setStatus("sending")
     setIsLoading(true)
 
@@ -161,6 +182,7 @@ export default function ContactForm() {
                         onChange={handleInputChange}
                         className="bg-gray-50 border-gray-300  placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500/20 h-12 rounded-xl"
                       />
+                      {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -177,6 +199,7 @@ export default function ContactForm() {
                         onChange={handleInputChange}
                         className="bg-gray-50 border-gray-300  placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500/20 h-12 rounded-xl"
                       />
+                      {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
                   </div>
 
@@ -193,6 +216,7 @@ export default function ContactForm() {
                       onChange={handleInputChange}
                       className="bg-gray-50 border-gray-300  placeholder:text-gray-500 focus:border-purple-500 focus:ring-purple-500/20 min-h-[140px] rounded-xl resize-none"
                     />
+                    {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
                   </div>
 
                   <Button

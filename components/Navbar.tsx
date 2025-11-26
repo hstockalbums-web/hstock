@@ -106,12 +106,12 @@ const Navbar = ({session}:any) => {
                       <Link href="/purchases" className={" w-full"} >My purchases</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <LogOut />
-                      <span onClick={()=>{
+                    <DropdownMenuItem className="cursor-pointer" onClick={()=>{
                         logOut()
                         router.refresh()
-                      }}>Log out</span>
+                      }}>
+                      <LogOut />
+                      <span>Log out</span>
                       <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
