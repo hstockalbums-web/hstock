@@ -45,12 +45,12 @@ export function NavUser({ session} : {session:Session | null}) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
-            <DropdownMenuItem>
-              <LogOut />
-              <span onClick={()=>{
+            <DropdownMenuItem onClick={()=>{
                 logOut()
                 router.refresh()
-              }}>Log out</span>
+              }} className="cursor-pointer">
+              <LogOut />
+              <span>Log out</span>
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>

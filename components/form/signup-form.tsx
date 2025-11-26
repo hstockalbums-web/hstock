@@ -17,7 +17,7 @@ const signUpSchema = z.object({
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
     companyName:z.string().optional(),
-    mobileNumber: z.string().min(10, "Mobile number must be at least 10 digits"),
+    mobileNumber: z.string().min(10, "Mobile number must be at least 10 digits").max(10,"Mobile number must be 10 digits"),
     address1: z.string().min(1, "Address line 1 is required"),
     address2: z.string().optional(),
     country: z.string(),
