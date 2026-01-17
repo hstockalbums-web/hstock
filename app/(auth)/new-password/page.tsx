@@ -50,8 +50,8 @@ const SignInForm=()=>{
     };
     
     return(
-        <div className="pt-[8.4rem] mb-[2.4rem]">    
-            <div className="max-w-md mx-auto shadow-2xl rounded-xl overflow-hidden p-8 space-y-6">
+        <div className="pt-[2.4rem] mb-[5.4rem]">    
+            <div className="max-w-md mx-auto border rounded-xl overflow-hidden p-8 space-y-6">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
                     <p className="text-muted-foreground">Create Your New Password.</p>
@@ -70,7 +70,7 @@ const SignInForm=()=>{
                                 id="password"
                                 name="password"
                                 type={showPassword.newPassword ? "text" : "password"}
-                                placeholder="Choose Your Password."
+                                placeholder="Enter Your New Password."
                                 />
                                 <Button
                                 type="button"
@@ -93,7 +93,7 @@ const SignInForm=()=>{
                         <div className="grid gap-2">
                             <Label htmlFor="confirmPassword">Confirm Password</Label>
                             <div className="relative">
-                                <Input id="confirmPassword" name="confirmPassword"  type={showPassword.confirmPassword ? "text" : "password"} placeholder="Comfirm Your Password." />
+                                <Input id="confirmPassword" name="confirmPassword"  type={showPassword.confirmPassword ? "text" : "password"} placeholder="Comfirm Your New Password." />
                                 <Button
                                     type="button"
                                     variant="ghost"
@@ -112,7 +112,7 @@ const SignInForm=()=>{
                             </div>
                         </div>
 
-                        <Button type="submit" className="w-full" disabled={isPending}>{isPending ? "Forgoting Password..." : "Forgot Passworrd"}</Button>
+                        <Button type="submit" className="w-full" disabled={isPending}>{isPending ? "Setting New Password..." : "Set New Password"}</Button>
                     </div>
                 </form>
             </div>
