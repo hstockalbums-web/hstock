@@ -3,7 +3,7 @@
 import { getUserByEmail } from "@/lib/password-reset-token";
 import { generatePasswordResetToken } from "@/lib/tokens";
 import * as z from "zod";
-import { Domain } from "@/config/api-endpoint";
+import { DomainFor } from "@/config/api-endpoint";
 import nodemailer from "nodemailer";
 import { siteConfig } from "@/config/site-config";
 
@@ -35,7 +35,7 @@ export const resetPassword = async (values: z.infer<typeof ResetSchema>) => {
     }
 
     const passwordResetToken = await generatePasswordResetToken(email);
-    const resetLink = `${Domain}/new-password?token=${passwordResetToken.token}`;
+    const resetLink = `${DomainFor}/new-password?token=${passwordResetToken.token}`;
     await transporter.sendMail({
       from: `${siteConfig.siteName} <${process.env.GMAIL_USER}>`,
       to: email,

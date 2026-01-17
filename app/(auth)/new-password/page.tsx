@@ -51,7 +51,7 @@ const SignInForm=()=>{
     
     return(
         <div className="pt-[8.4rem] mb-[2.4rem]">    
-            <div className="max-w-md mx-auto bg-card  shadow-2xl rounded-xl overflow-hidden p-8 space-y-6">
+            <div className="max-w-md mx-auto shadow-2xl rounded-xl overflow-hidden p-8 space-y-6">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
                     <p className="text-muted-foreground">Create Your New Password.</p>
