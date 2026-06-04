@@ -139,7 +139,7 @@ export default function AdminPayment({ purchases, emailTemp, token, totalPurchas
     }
   }
 
-  const handleSendDetails = async (purchase: Purchase, emailID: string,) => {
+  const handleSendDetails = async (purchase: Purchase, emailID: string, skipRegister: boolean = false) => {
     const selectedDate = dates[purchase.id]
     const dateObj = new Date(selectedDate || new Date());
     const formattedDate = dateObj.toISOString().split('T')[0];
@@ -156,38 +156,52 @@ export default function AdminPayment({ purchases, emailTemp, token, totalPurchas
           [purchase.id]: true,
         }))
 
-        // 1️⃣ Register API
-        const formdata = new FormData();
-        formdata.append("apiKey", "iconic@infotech@PhotoAlbum");
-        formdata.append("act", "Register");
-        formdata.append("productId", purchase?.plan?.planID);
-        formdata.append("name", purchase?.user?.name);
-        formdata.append("email", purchase?.user?.email);
-        formdata.append(
-          "address",
-          `${purchase?.user?.address} ${purchase?.user?.address2 || ""} ${purchase?.user?.city} ${purchase?.user?.country} ${purchase?.user?.pincode}`
-        );
-        formdata.append("mobile", String(purchase?.user?.phoneNumber));
+        let proceedToLicense = skipRegister;
 
-        const registerRes = await fetch(`${phpbackendURL}/api.php`, {
-          method: "POST",
-          body: formdata,
-        });
+        if (!skipRegister) {
+          // 1️⃣ Register API
+          const formdata = new FormData();
+          formdata.append("apiKey", "iconic@infotech@PhotoAlbum");
+          formdata.append("act", "Register");
+          formdata.append("productId", purchase?.plan?.planID);
+          formdata.append("name", purchase?.user?.name);
+          formdata.append("email", purchase?.user?.email);
+          formdata.append(
+            "address",
+            `${purchase?.user?.address} ${purchase?.user?.address2 || ""} ${purchase?.user?.city} ${purchase?.user?.country} ${purchase?.user?.pincode}`
+          );
+          formdata.append("mobile", String(purchase?.user?.phoneNumber));
 
-        if (registerRes.ok) {
-          const registerResult = await registerRes.text();
+          const registerRes = await fetch(`${phpbackendURL}/api.php`, {
+            method: "POST",
+            body: formdata,
+          });
 
-          // 2️⃣ GetLicKey API (only if register success)
+          if (registerRes.ok) {
+            const registerResult = await registerRes.text();
+            proceedToLicense = true;
+          } else {
+            toast.error("Error while registering details....");
+            return;
+          }
+        }
+
+        if (proceedToLicense) {
+          // 2️⃣ GetLicKey API (only if register success or skipped)
           const formdata1 = new FormData();
           formdata1.append("apiKey", "iconic@infotech@PhotoAlbum");
-          formdata1.append("email", purchase?.user?.email);
-          formdata1.append("expiry", formattedDate);
           formdata1.append("act", "GetLicKey");
-          formdata1.append("productId", purchase.plan.planID);
+          formdata1.append("productId", purchase?.plan?.planID || "");
+          formdata1.append("email", purchase?.user?.email || "");
+          formdata1.append("expiry", formattedDate);
 
           const licenseRes = await fetch(`${phpbackendURL}/api.php`, {
             method: "POST",
+            headers: {
+              "Accept": "*/*"
+            },
             body: formdata1,
+            redirect: "follow"
           });
           if (licenseRes.ok) {
             const licenseResult = await licenseRes.text();
@@ -212,8 +226,6 @@ export default function AdminPayment({ purchases, emailTemp, token, totalPurchas
           } else {
             toast.error("Error while sending details....")
           }
-        } else {
-          toast.error("Error while sending details....")
         }
       } catch (err: any) {
         console.error("Error:", err);
@@ -425,15 +437,26 @@ export default function AdminPayment({ purchases, emailTemp, token, totalPurchas
                         </Popover>
                       </div>
 
-                      <Button
-                        onClick={() => handleSendDetails(purchase, selectedTemplates[purchase.id])}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        {selectedLoader[purchase.id] ? <Loader2 className="animate-spin" /> : <>
-                          <Send className="w-4 h-4 mr-2" />
-                          Send Details
-                        </>}
-                      </Button>
+                      <div className="space-y-2 w-full">
+                        <Button
+                          onClick={() => handleSendDetails(purchase, selectedTemplates[purchase.id])}
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                          disabled={selectedLoader[purchase.id]}
+                        >
+                          {selectedLoader[purchase.id] ? <Loader2 className="animate-spin" /> : <>
+                            <Send className="w-4 h-4 mr-2" />
+                            Send Details
+                          </>}
+                        </Button>
+                        <Button
+                          onClick={() => handleSendDetails(purchase, selectedTemplates[purchase.id], true)}
+                          variant="outline"
+                          disabled={selectedLoader[purchase.id]}
+                          className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
+                        >
+                          Skip Register & Send Email with Key
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
