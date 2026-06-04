@@ -31,41 +31,54 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain:[
+  navMain: [
     {
-      title:'Hero Section',
+      title: 'Hero Section',
       icon: GalleryHorizontal,
-      url:'/control-panel/hero-section'
+      url: '/control-panel/hero-section',
+      isnew: false
     },
     {
-      title:'User Info',
-      icon:LayoutDashboard,
-      url:'/control-panel'
+      title: 'User Info',
+      icon: LayoutDashboard,
+      url: '/control-panel',
+      isnew: false
     },
     {
-      title:'Payment',
+      title: 'Payment',
       icon: CircleDollarSign,
-      url:'/control-panel/payment-info'
+      url: '/control-panel/payment-info',
+      isnew: false
     },
     {
-      title:'Referral',
+      title: 'Referral',
       icon: Send,
-      url:'/control-panel/referral'
+      url: '/control-panel/referral',
+      isnew: false
     },
     {
-      title:'Plan',
+      title: 'Plan',
       icon: IndianRupee,
-      url:'/control-panel/plan'
+      url: '/control-panel/plan',
+      isnew: false
     },
     {
-      title:'Youtube Video',
+      title: 'Youtube Video',
       icon: Video,
-      url:'/control-panel/video'
+      url: '/control-panel/video',
+      isnew: false
     },
     {
-      title:'Email Content',
+      title: 'Email Content',
       icon: Mail,
-      url:'/control-panel/email-section'
+      url: '/control-panel/email-section',
+      isnew: false
+    },
+    {
+      title: 'Final Purchase',
+      icon: IndianRupee,
+      url: '/control-panel/final-purchase',
+      isnew: true
     }
   ],
 }

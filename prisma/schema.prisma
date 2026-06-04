@@ -255,3 +255,24 @@ model FeatureSection {
 //   createdAt  DateTime @default(now())
 //   updatedAt  DateTime @updatedAt
 // }
+model FinalPurchase {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  from       String
+  to         String
+  subject    String
+  html       String   @db.String
+  userId     String   @db.ObjectId
+  licenseKey String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model FinalPurchaseError {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  licenseKey  String
+  emailTempId String   @db.ObjectId
+  error       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

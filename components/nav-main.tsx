@@ -20,6 +20,7 @@ export function NavMain({
     title: string
     url: string
     icon?: LucideIcon
+    isnew?: boolean
   }[]
 }) {
   const pathname = usePathname()
@@ -29,10 +30,11 @@ export function NavMain({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title} asChild isActive={pathname ==item.url}>
+              <SidebarMenuButton tooltip={item.title} asChild isActive={pathname == item.url}>
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
+                  {item.isnew && <span className="ml-auto animate-pulse size-2 bg-red-500 rounded-full"></span>}
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
