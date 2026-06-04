@@ -10,20 +10,35 @@ export async function GET(req: NextRequest) {
   if (!token) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   try {
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const search = searchParams.get("search") || "";
+    const limit = 50;
+
     let payments;
-    let emailTemplate
-    // const emailTemplate = await db.featureSection.findMany({
-    //   select:{
-    //     emailTitle:true,
-    //     id:true
-    //   }
-    // })
+    let emailTemplate;
+    let totalPurchases = 0;
 
     if (token.role === "admin") {
+      const OR: any[] = [
+        { user: { email: { contains: search, mode: "insensitive" } } }
+      ];
+      if (search.length === 24) {
+        OR.push({ userId: search });
+        OR.push({ planId: search });
+      }
+
+      const whereClause = search ? { OR } : {};
+
       payments = await db.payment.findMany({
+        where: whereClause,
         include: { user: true, plan: true },
         orderBy: { createdAt: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
       });
+      totalPurchases = await db.payment.count({ where: whereClause });
+
       emailTemplate = await db.featureSection.findMany({
         select: { emailTitle: true, id: true },
       });
@@ -33,9 +48,10 @@ export async function GET(req: NextRequest) {
         include: { plan: true },
         orderBy: { createdAt: "desc" },
       });
+      totalPurchases = payments.length;
     }
 
-    return NextResponse.json( { payments, emailTemplate }, { status: 200 });
+    return NextResponse.json({ payments, emailTemplate, totalPurchases }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Error fetching purchases" }, { status: 500 });
